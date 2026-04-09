@@ -8,7 +8,7 @@
         body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f172a; overflow: hidden; font-family: sans-serif; color: #fff; }
         
         #heart-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
-        .heart { position: absolute; font-size: 22px; animation: fall linear infinite; opacity: 0.8; }
+        .heart { position: absolute; font-size: 24px; animation: fall linear infinite; opacity: 0.9; }
         
         @keyframes fall {
             0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
@@ -25,11 +25,11 @@
             border: 2px solid #38bdf8; 
             margin: 0 auto 20px; 
             display: none; 
-            object-fit: contain; /* بدون زوم */
+            object-fit: contain; /* بدون زوم و نمایش کامل عکس */
         }
         
         h1 { color: #38bdf8; font-size: 24px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
-        textarea { width: 100%; height: 150px; background: rgba(0, 0, 0, 0.3); border-radius: 15px; color: #fff; padding: 12px; border: 1px solid rgba(56, 189, 248, 0.2); resize: none; outline: none; box-sizing: border-box; font-size: 16px; }
+        textarea { width: 100%; height: 150px; background: rgba(0, 0, 0, 0.3); border-radius: 15px; color: #fff; padding: 12px; border: 1px solid rgba(56, 189, 248, 0.2); resize: none; outline: none; box-sizing: border-box; font-size: 16px; line-height: 1.5; }
         
         .btn { width: 100%; padding: 15px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 15px; font-size: 14px; }
         #mainBtn { background: #38bdf8; color: #0f172a; }
@@ -71,8 +71,8 @@
         audio.play().catch(e => console.log("Audio play failed"));
         document.getElementById('playBtn').style.display = "none";
         
-        // سرعت ساخت قلب متعادل (هر ۲۰۰ میلی‌ثانیه یک بار)
-        setInterval(createHeart, 200); 
+        // سرعت ساخت اموجی‌ها (هر ۲۵۰ میلی‌ثانیه برای تعادل بهتر)
+        setInterval(createHeart, 250); 
     }
 
     function createHeart() {
@@ -80,17 +80,17 @@
         const heart = document.createElement('div');
         heart.classList.add('heart');
         
-        // انتخاب تصادفی بین سه مدل قلب
-        const heartTypes = ['💞', '💕', '🤍'];
+        // لیست اموجی‌های جدید تو
+        const heartTypes = ['🫶🏻', '💕', '💞', '🫠'];
         heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
         
         heart.style.left = Math.random() * 100 + 'vw';
-        // سرعت پایین آمدن متعادل
-        heart.style.animationDuration = Math.random() * 2 + 5 + 's'; 
-        heart.style.fontSize = Math.random() * 10 + 18 + 'px';
+        // سرعت سقوط ملایم و رمانتیک
+        heart.style.animationDuration = Math.random() * 3 + 5 + 's'; 
+        heart.style.fontSize = Math.random() * 8 + 20 + 'px';
         container.appendChild(heart);
         
-        setTimeout(() => { heart.remove(); }, 7000);
+        setTimeout(() => { heart.remove(); }, 8000);
     }
 
     function process() {
