@@ -3,28 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Siver</title>
+    <title>For You</title>
     <style>
         body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f172a; overflow: hidden; font-family: sans-serif; color: #fff; }
-        #heart-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-        .heart { position: absolute; color: #f43f5e; font-size: 20px; animation: fall linear forwards; }
-        @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
-        .container { width: 85%; max-width: 400px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 30px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; z-index: 10; }
         
-        /* تنظیمات عکس برای حالت مستطیل */
-        .profile-img { 
-            width: 100%; 
-            max-width: 250px; 
-            height: auto; 
-            border-radius: 20px; /* گوشه‌های کمی نرم */
-            border: 2px solid #38bdf8; 
-            margin: 0 auto 20px; 
-            display: none; 
-            object-fit: cover;
+        /* باران پرپشت 💞 */
+        #heart-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .heart { position: absolute; font-size: 25px; animation: fall linear infinite; opacity: 0.8; }
+        
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0.3; }
         }
 
-        h1 { color: #38bdf8; font-size: 22px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
-        textarea { width: 100%; height: 150px; background: rgba(0, 0, 0, 0.3); border-radius: 15px; color: #fff; padding: 12px; border: 1px solid rgba(56, 189, 248, 0.2); resize: none; outline: none; box-sizing: border-box; font-size: 16px; }
+        .container { width: 85%; max-width: 400px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 30px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; z-index: 10; position: relative; }
+        
+        /* عکس مستطیلی */
+        .profile-img { width: 100%; height: auto; max-height: 300px; border-radius: 15px; border: 2px solid #38bdf8; margin: 0 auto 20px; display: none; object-fit: cover; }
+        
+        h1 { color: #38bdf8; font-size: 24px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        textarea { width: 100%; height: 150px; background: rgba(0, 0, 0, 0.3); border-radius: 15px; color: #fff; padding: 12px; border: 1px solid rgba(56, 189, 248, 0.2); resize: none; outline: none; box-sizing: border-box; font-size: 16px; font-family: sans-serif; }
+        
         .btn { width: 100%; padding: 15px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 15px; font-size: 14px; }
         #mainBtn { background: #38bdf8; color: #0f172a; }
         #playBtn { background: #f43f5e; color: #fff; display: none; }
@@ -35,13 +34,17 @@
 <div id="heart-container"></div>
 <div class="container">
     <img id="userImg" src="photo.jpg" class="profile-img">
-    <h1 id="title">Secret Message</h1>
+    <h1 id="title">SECRET MESSAGE</h1>
     <textarea id="textInput" placeholder="Write your message here..."></textarea>
     <button id="mainBtn" class="btn" onclick="process()">CREATE MAGIC LINK</button>
-    <button id="playBtn" class="btn" onclick="startMagic()">OPEN MESSAGE & PLAY 🎵</button>
+    <button id="playBtn" class="btn" onclick="startMagic()">OPEN MESSAGE & PLAY 💞🎵</button>
     <div id="linkOutput"></div>
 </div>
-<audio id="bgMusic" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
+
+<audio id="bgMusic" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
 <script>
     window.onload = function() {
         const hash = window.location.hash.substring(1);
@@ -49,7 +52,7 @@
             try {
                 const decoded = decodeURIComponent(escape(atob(hash)));
                 document.getElementById('textInput').value = decoded;
-                document.getElementById('title').innerText = "FOR SIVER";
+                document.getElementById('title').innerText = "خوشگل ترین دختر";
                 document.getElementById('mainBtn').style.display = "none";
                 document.getElementById('playBtn').style.display = "block";
                 document.getElementById('textInput').readOnly = true;
@@ -57,22 +60,34 @@
             } catch(e) {}
         }
     }
+
     function startMagic() {
         const audio = document.getElementById('bgMusic');
-        audio.play().catch(e => console.log("Audio play failed:", e));
+        audio.play().catch(e => console.log("Audio play failed"));
         document.getElementById('playBtn').style.display = "none";
-        setInterval(createHeart, 300);
+        
+        // تولید قلب‌های اولیه زیاد
+        for (let i = 0; i < 50; i++) {
+             setTimeout(createHeart, Math.random() * 2000); 
+        }
+        // بارش مداوم و سریع 💞
+        setInterval(createHeart, 90); 
     }
+
     function createHeart() {
         const container = document.getElementById('heart-container');
         const heart = document.createElement('div');
         heart.classList.add('heart');
-        heart.innerHTML = '❤️';
+        heart.innerHTML = '💞'; 
+        
         heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+        heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+        heart.style.fontSize = Math.random() * 15 + 15 + 'px';
         container.appendChild(heart);
-        setTimeout(() => { heart.remove(); }, 5000);
+        
+        setTimeout(() => { heart.remove(); }, 8000);
     }
+
     function process() {
         const txt = document.getElementById('textInput').value;
         if (!txt) return;
