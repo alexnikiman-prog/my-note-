@@ -5,88 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Siver</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            font-family: 'Apple SD Gothic Neo', 'Segoe UI', Roboto, sans-serif;
-            color: #ffffff;
-        }
-        .container {
-            width: 85%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            padding: 40px 30px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-        h1 {
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-            color: #38bdf8;
-            font-size: 24px;
-        }
-        textarea {
-            width: 100%;
-            height: 180px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            border-radius: 20px;
-            color: #f1f5f9;
-            padding: 15px;
-            font-size: 16px;
-            line-height: 1.6;
-            resize: none;
-            outline: none;
-            box-sizing: border-box;
-            margin-bottom: 20px;
-        }
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 50px;
-            background: #38bdf8;
-            color: #0f172a;
-            font-weight: bold;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.2);
-        }
-        button:active {
-            transform: scale(0.98);
-        }
-        .result-box {
-            display: none;
-            margin-top: 25px;
-            padding: 15px;
-            background: rgba(56, 189, 248, 0.1);
-            border-radius: 15px;
-            font-size: 12px;
-            word-break: break-all;
-            color: #bae6fd;
-            border: 1px dashed #38bdf8;
-        }
+        body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f172a; overflow: hidden; font-family: sans-serif; color: #fff; }
+        #heart-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .heart { position: absolute; color: #f43f5e; font-size: 20px; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
+        .container { width: 85%; max-width: 400px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 30px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; z-index: 10; }
+        .profile-img { width: 120px; height: 120px; border-radius: 50%; border: 3px solid #38bdf8; margin: 0 auto 20px; object-fit: cover; display: none; }
+        h1 { color: #38bdf8; font-size: 22px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        textarea { width: 100%; height: 150px; background: rgba(0, 0, 0, 0.3); border-radius: 15px; color: #fff; padding: 12px; border: 1px solid rgba(56, 189, 248, 0.2); resize: none; outline: none; box-sizing: border-box; font-size: 16px; }
+        .btn { width: 100%; padding: 15px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 15px; font-size: 14px; }
+        #mainBtn { background: #38bdf8; color: #0f172a; }
+        #playBtn { background: #f43f5e; color: #fff; display: none; }
+        #linkOutput { display: none; margin-top: 20px; font-size: 11px; color: #bae6fd; word-break: break-all; border: 1px dashed #38bdf8; padding: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
-
+<div id="heart-container"></div>
 <div class="container">
-    <h1 id="title">MESSENGER</h1>
-    <textarea id="textInput" placeholder="Write your heart out..."></textarea>
-    <button id="mainBtn" onclick="process()">CREATE MAGIC LINK</button>
-    <div id="linkOutput" class="result-box"></div>
+    <img id="userImg" src="photo.jpg" class="profile-img">
+    <h1 id="title">Secret Message</h1>
+    <textarea id="textInput" placeholder="Write your message here..."></textarea>
+    <button id="mainBtn" class="btn" onclick="process()">CREATE MAGIC LINK</button>
+    <button id="playBtn" class="btn" onclick="startMagic()">OPEN MESSAGE & PLAY 🎵</button>
+    <div id="linkOutput"></div>
 </div>
-
+<audio id="bgMusic" loop><source src="music.mp3" type="audio/mpeg"></audio>
 <script>
     window.onload = function() {
         const hash = window.location.hash.substring(1);
@@ -94,13 +37,29 @@
             try {
                 const decoded = decodeURIComponent(escape(atob(hash)));
                 document.getElementById('textInput').value = decoded;
-                document.getElementById('title').innerText = "FOR YOU";
+                document.getElementById('title').innerText = "FOR SIVER";
                 document.getElementById('mainBtn').style.display = "none";
+                document.getElementById('playBtn').style.display = "block";
                 document.getElementById('textInput').readOnly = true;
-            } catch(e) { }
+                document.getElementById('userImg').style.display = "block";
+            } catch(e) {}
         }
     }
-
+    function startMagic() {
+        document.getElementById('bgMusic').play();
+        document.getElementById('playBtn').style.display = "none";
+        setInterval(createHeart, 300);
+    }
+    function createHeart() {
+        const container = document.getElementById('heart-container');
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+        container.appendChild(heart);
+        setTimeout(() => { heart.remove(); }, 5000);
+    }
     function process() {
         const txt = document.getElementById('textInput').value;
         if (!txt) return;
@@ -110,9 +69,8 @@
         out.style.display = 'block';
         out.innerText = finalLink;
         navigator.clipboard.writeText(finalLink);
-        alert("Magic link copied! Send it to Siver.");
+        alert("Magic link copied!");
     }
 </script>
-
 </body>
 </html>
