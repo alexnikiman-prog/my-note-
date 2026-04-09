@@ -10,7 +10,19 @@
         .heart { position: absolute; color: #f43f5e; font-size: 20px; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
         .container { width: 85%; max-width: 400px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 30px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; z-index: 10; }
-        .profile-img { width: 120px; height: 120px; border-radius: 50%; border: 3px solid #38bdf8; margin: 0 auto 20px; object-fit: cover; display: none; }
+        
+        /* تنظیمات عکس برای حالت مستطیل */
+        .profile-img { 
+            width: 100%; 
+            max-width: 250px; 
+            height: auto; 
+            border-radius: 20px; /* گوشه‌های کمی نرم */
+            border: 2px solid #38bdf8; 
+            margin: 0 auto 20px; 
+            display: none; 
+            object-fit: cover;
+        }
+
         h1 { color: #38bdf8; font-size: 22px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
         textarea { width: 100%; height: 150px; background: rgba(0, 0, 0, 0.3); border-radius: 15px; color: #fff; padding: 12px; border: 1px solid rgba(56, 189, 248, 0.2); resize: none; outline: none; box-sizing: border-box; font-size: 16px; }
         .btn { width: 100%; padding: 15px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 15px; font-size: 14px; }
@@ -29,7 +41,7 @@
     <button id="playBtn" class="btn" onclick="startMagic()">OPEN MESSAGE & PLAY 🎵</button>
     <div id="linkOutput"></div>
 </div>
-<audio id="bgMusic" loop><source src="music.mp3" type="audio/mpeg"></audio>
+<audio id="bgMusic" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
 <script>
     window.onload = function() {
         const hash = window.location.hash.substring(1);
@@ -46,7 +58,8 @@
         }
     }
     function startMagic() {
-        document.getElementById('bgMusic').play();
+        const audio = document.getElementById('bgMusic');
+        audio.play().catch(e => console.log("Audio play failed:", e));
         document.getElementById('playBtn').style.display = "none";
         setInterval(createHeart, 300);
     }
